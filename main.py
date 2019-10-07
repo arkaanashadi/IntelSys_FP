@@ -24,8 +24,10 @@ def generate_board():
 def fill(column):
     pass
 
-def check(board, column, row):
-    print(board[column][row])
+def check(board, column, row): # Checks if the column is full
+    # print(board[column][row])
+
+    # Checks if the top of the column is not 0, meaning a full column
     if board[column][row] != 0:
         print("gaboleh")
         return False

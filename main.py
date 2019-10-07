@@ -4,15 +4,14 @@
 def generate_board():
     # s_row = int(input("row:"))
     # s_column = int(input("column:"))
+
+    # Board Dimensions
     s_row = 6
     s_column = 7
 
+    # Populate board
     game_board = [[0 for i in range(0, s_row)] for x in range(0, s_column)]
     return game_board
-    # for i in range(len(board)):
-    #     print(board[i])
-
-
 # def check_full(column):
 #     print(board[-1][column])
 
@@ -23,8 +22,9 @@ def generate_board():
 # check_full(0)
 
 def fill(column):
+    pass
 
-def check(board,column,row):
+def check(board, column, row):
     print(board[column][row])
     if board[column][row] != 0:
         print("gaboleh")
@@ -34,8 +34,10 @@ def check(board,column,row):
         return True
 
 def player_turn(board):
+    # User input for which row
     column = int(input("Select column:"))
-    
+
+    # Determines where is the bottom of the row
     row = len(board[0]) - 1
     for i in board[column]:
         if board[column][i] != 0:

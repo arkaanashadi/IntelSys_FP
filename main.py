@@ -33,17 +33,26 @@ def check(board,column,row):
         print("boleh")
         return True
 
-def main():
-    board = generate_board()
-    print(board)
+def player_turn(board):
     column = int(input("Select column:"))
-    row = len(board[0])-1
+    
+    row = len(board[0]) - 1
     for i in board[column]:
         if board[column][i] != 0:
             row = i
             break
         else:
             break
-    check(board,column,row)
+    check(board, column, row)
+
+def ai_turn(board):
+    True
+
+def main():
+    board = generate_board()
+    print(board)
+    player_turn(board)
+    print(board)
+    ai_turn(board)
     print(board)
 main()

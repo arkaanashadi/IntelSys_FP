@@ -24,12 +24,26 @@ def generate_board():
 
 def fill(column):
 
-
+def check(board,column,row):
+    print(board[column][row])
+    if board[column][row] != 0:
+        print("gaboleh")
+        return False
+    else:
+        print("boleh")
+        return True
 
 def main():
     board = generate_board()
-    # board[0][0] = 1
     print(board)
-
-
+    column = int(input("Select column:"))
+    row = len(board[0])-1
+    for i in board[column]:
+        if board[column][i] != 0:
+            row = i
+            break
+        else:
+            break
+    check(board,column,row)
+    print(board)
 main()

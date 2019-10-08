@@ -1,13 +1,15 @@
 # Variables
 # board = 2d array to simulate the game board
 # player = 1 or 2 based on the player turn. 1 = player1, 2 = player2
-# column = self explanatory
-# row = self explanatory
+# s_column = standard column
+# s_row = standard row
 
 
 def generate_board():
 
     # Board Dimensions
+    global s_row
+    global s_column
     s_row = 6
     s_column = 7
 
@@ -16,13 +18,13 @@ def generate_board():
     return game_board
 
 
-def fill(board, column, player):
+def fill(column, player):
 
     # last value in column
-    row = len(board[column]) - 1
+    row = s_row - 1
 
     # Determines where is the bottom of the row
-    for curr_row in range(0, row + 1):
+    for curr_row in range(0, s_row):
         if board[column][curr_row] != 0:
             continue
         else:
@@ -30,7 +32,7 @@ def fill(board, column, player):
     board[column][row] = player
 
 
-def check(board, column):  # Checks if the column is full
+def check(column):  # Checks if the column is full
 
     # Checks if the top of the column is not 0, meaning a full column
     if board[column][0] != 0:
@@ -41,11 +43,12 @@ def check(board, column):  # Checks if the column is full
         return True
 
 
-def win_row(board, player):
-    pass
+def win_row(player):
+    for row in len(board[0]):
+        pass
 
 
-def player_turn(board):
+def player_turn():
 
     # User input for which column
     column = int(input("Select column:"))
@@ -59,8 +62,10 @@ def ai_turn(board):
 
 
 def main():
+    global board
     board = generate_board()
     print(board)
+    print(len(board[0]))
     while True:
         player_turn(board)
         print(board)

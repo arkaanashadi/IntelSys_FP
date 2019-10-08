@@ -4,12 +4,22 @@
 # s_column = standard column
 # s_row = standard row
 
+# General Notes
+# Board format = board[column][row]
 
-def generate_board():
 
-    # Board Dimensions
+def temporary_test_board():
     global s_row
     global s_column
+    s_row = 6
+    s_column = 7
+    return [[i + (x * 10) for i in range(1, s_row + 1)] for x in range(1, s_column + 1)]
+
+
+def generate_board():
+    global s_row
+    global s_column
+    # Standard Connect 4 board dimensions
     s_row = 6
     s_column = 7
 
@@ -19,7 +29,6 @@ def generate_board():
 
 
 def fill(column, player):
-
     # last value in column
     row = s_row - 1
 
@@ -44,32 +53,64 @@ def check(column):  # Checks if the column is full
 
 
 def win_row(player):
-    for row in len(board[0]):
-        pass
+    # print(s_row)
+    # iterates through all the rows
+    for row in range(s_row):
+
+        # iterates through columns until the
+        for column in range(s_column - 3):
+
+            # checks if there is a row of 4 of the same "color"
+            if board[column][row] == player and \
+                    board[column + 1][row] == player and \
+                    board[column + 2][row] == player and \
+                    board[column + 3][row] == player:
+                return player
+    return 0
+
+
+def win_column(player):
+
+    # iterates through columns until the
+    for column in range(s_column):
+
+        # iterates through all the rows
+        for row in range(s_row - 3):
+
+            # checks if there is a column of 4 of the same "color"
+            if board[column][row] == player and \
+                    board[column][row + 1] == player and \
+                    board[column][row + 2] == player and \
+                    board[column][row + 3] == player:
+                return player
+    return 0
 
 
 def player_turn():
-
     # User input for which column
-    column = int(input("Select column:"))
-    if check(board, column):
-        fill(board, column, 1)
+    column = int(input("Select column: "))
+    if check(column):
+        fill(column, 1)  # 1 meaning player1 for player
 
 
-def ai_turn(board):
+def ai_turn():
     # True
     pass
 
 
 def main():
     global board
+
     board = generate_board()
+    # board = temporary_test_board()
     print(board)
-    print(len(board[0]))
+    # print(s_row)
+
     while True:
-        player_turn(board)
+        player_turn()
+        print(win_row(1) or win_column(1))
         print(board)
-        ai_turn(board)
+        ai_turn()
         # print(board)
 
 

@@ -1,9 +1,11 @@
-# import numpy as np
+# Variables
+# board = 2d array to simulate the game board
+# player = 1 or 2 based on the player turn. 1 = player1, 2 = player2
+# column = self explanatory
+# row = self explanatory
 
 
 def generate_board():
-    # s_row = int(input("row:"))
-    # s_column = int(input("column:"))
 
     # Board Dimensions
     s_row = 6
@@ -27,8 +29,8 @@ def fill(board, column, player):
             row = curr_row
     board[column][row] = player
 
+
 def check(board, column):  # Checks if the column is full
-    # print(board[column][row])
 
     # Checks if the top of the column is not 0, meaning a full column
     if board[column][0] != 0:
@@ -39,8 +41,13 @@ def check(board, column):  # Checks if the column is full
         return True
 
 
+def win_row(board, player):
+    pass
+
+
 def player_turn(board):
-    # User input for which row
+
+    # User input for which column
     column = int(input("Select column:"))
     if check(board, column):
         fill(board, column, 1)
@@ -55,7 +62,6 @@ def main():
     board = generate_board()
     print(board)
     while True:
-
         player_turn(board)
         print(board)
         ai_turn(board)

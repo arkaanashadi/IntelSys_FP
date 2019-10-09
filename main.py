@@ -7,13 +7,15 @@
 # General Notes
 # Board format = board[column][row]
 
+
 def test_print():
     for row in range(s_row):
         print()
         for column in range(s_column):
             print(board[column][row], " ", end="")
     print()
-    
+
+
 def temporary_test_board():
     global s_row
     global s_column
@@ -92,11 +94,11 @@ def win_column(player):
     return 0
 
 
-def player_turn():
+def player_turn(player):
     # User input for which column
     column = int(input("Select column: "))
     if check(column):
-        fill(column, 1)  # 1 meaning player1 for player
+        fill(column, player)  # 1 meaning player1 for player
 
 
 def ai_turn():
@@ -113,8 +115,10 @@ def main():
     # print(s_row)
 
     while True:
-        player_turn()
+        player_turn(1)
         print(win_row(1) or win_column(1))
+        player_turn(2)
+        print(win_row(2) or win_column(2))
         print(board)
         ai_turn()
         # print(board)

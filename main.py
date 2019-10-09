@@ -7,7 +7,13 @@
 # General Notes
 # Board format = board[column][row]
 
-
+def test_print():
+    for row in range(s_row):
+        print()
+        for column in range(s_column):
+            print(board[column][row], " ", end="")
+    print()
+    
 def temporary_test_board():
     global s_row
     global s_column

@@ -93,6 +93,38 @@ def win_column(player):
                 return player
     return 0
 
+def win_forw_diag(player):
+
+    #iterates through columns 
+    for column in range(s_column - 3):
+        
+        #iterates through rows
+        for row in range(s_row - 3):
+            
+            #check if there is a forward diagonal of 4 of the same "color"
+            if board[column][row] == player and \
+                    board[column+1][row+1] == player and \
+                    board[column+2][row+2] == player and \
+                    board[column+3][row+3] == player:
+                return player
+    return 0
+
+def win_back_diag(player):
+
+    #iterates through columns
+    for column in range(s_column - 3):
+        
+        #iterates through rows
+        for row in range(s_row - 3):
+            
+            #check if there is a back diagonal of 4 of the same "color"
+            if board[row][column] == player and \
+                    board[column-1][row+1] == player and \
+                    board[column-2][row+2] == player and \
+                    board[column-3][row+3] == player:
+                return player
+    return 0
+
 
 def player_turn(player):
     # User input for which column
@@ -121,9 +153,9 @@ def main():
 
     while True:
         player_turn(1)
-        print(win_row(1) or win_column(1))
+        print(win_row(1) or win_column(1) or win_forw_diag(1) or win_back_diag(1))
         player_turn(2)
-        print(win_row(2) or win_column(2))
+        print(win_row(2) or win_column(2) or win_forw_diag(2) or win_back_diag(2))
         print(board)
         ai_turn()
         # print(board)

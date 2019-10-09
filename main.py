@@ -96,9 +96,14 @@ def win_column(player):
 
 def player_turn(player):
     # User input for which column
-    column = int(input("Select column: "))
+    while True:
+        column = int(input("Select column: "))-1
+        if column not in range(1, s_column):
+            print("Column does not exist")
+        else:
+            break
     if check(column):
-        fill(column, player)  # 1 meaning player1 for player
+        fill(column, 1)  # 1 meaning player1 for player
 
 
 def ai_turn():

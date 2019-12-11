@@ -130,7 +130,7 @@ def player_turn(player):
     # User input for which column
     while True:
         column = int(input("Select column: "))-1
-        if column not in range(1, s_column):
+        if column not in range(0, s_column):
             print("Column does not exist")
         else:
             break

@@ -31,7 +31,7 @@ def generate_board():
     s_row = 6
     s_column = 7
 
-    # Populate board
+    # Populate board, fills the 2d array with 0 as the place holder value
     game_board = [[0 for i in range(0, s_row)] for x in range(0, s_column)]
     return game_board
 
@@ -61,7 +61,6 @@ def check(column):  # Checks if the column is full
 
 
 def win_row(player):
-    # print(s_row)
     # iterates through all the rows
     for row in range(s_row):
 
@@ -135,7 +134,7 @@ def player_turn(player):
         else:
             break
     if check(column):
-        fill(column, 1)  # 1 meaning player1 for player
+        fill(column, player)  # 1 meaning player1 for player
 
 
 def ai_turn():
@@ -147,18 +146,22 @@ def main():
     global board
 
     board = generate_board()
-    # board = temporary_test_board()
-    print(board)
-    # print(s_row)
-
+    winner = 0
+    turn = 1
     while True:
-        player_turn(1)
-        print(win_row(1) or win_column(1) or win_forw_diag(1) or win_back_diag(1))
-        player_turn(2)
-        print(win_row(2) or win_column(2) or win_forw_diag(2) or win_back_diag(2))
-        print(board)
-        ai_turn()
-        # print(board)
+        if turn == 1:
+            player_turn(1)
+            winner = win_row(1) or win_column(1) or win_forw_diag(1) or win_back_diag(1)
+            test_print()
+            turn = 2
 
+        elif turn == 2:
+            player_turn(2)
+            winner = win_row(2) or win_column(2) or win_forw_diag(2) or win_back_diag(2)
+            test_print()
+            turn = 1
 
+        if winner !=0:
+            print("Winner :",winner)
+            break
 main()

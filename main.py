@@ -1,27 +1,28 @@
+import heuristic  # For ai_turn
+
+
 # Variables
-# board = 2d array to simulate the game board
+# game_board = 2d array to simulate the game board
 # player = 1 or 2 based on the player turn. 1 = player1, 2 = player2
 # s_column = standard column
 # s_row = standard row
+# last_column = the column in which the last slot filled
+# last_row = the row in which the last slot filled
 
 # General Notes
 # Board format = board[column][row]
 
 
-def test_print():
+def test_print(board):
+    # Print board in raw array format
+    # for i in board:
+    #   print(str(i))
+    # Print board in simulated format
     for row in range(s_row):
         print()
         for column in range(s_column):
-            print(board[column][row], " ", end="")
+            print(board[column][row], "| ", end="")
     print()
-
-
-def temporary_test_board():
-    global s_row
-    global s_column
-    s_row = 6
-    s_column = 7
-    return [[i + (x * 10) for i in range(1, s_row + 1)] for x in range(1, s_column + 1)]
 
 
 def generate_board():
@@ -32,11 +33,13 @@ def generate_board():
     s_column = 7
 
     # Populate board, fills the 2d array with 0 as the place holder value
-    game_board = [[0 for i in range(0, s_row)] for x in range(0, s_column)]
-    return game_board
+    generated_board = [[0 for i in range(0, s_row)] for x in range(0, s_column)]
+    return generated_board
 
 
-def fill(column, player):
+def fill(board, column, player):
+    global last_row
+    global last_column
     # last value in column
     row = s_row - 1
 
@@ -47,121 +50,120 @@ def fill(column, player):
         else:
             row = curr_row
     board[column][row] = player
+    last_row = row
+    last_column = column
 
 
 def check(column):  # Checks if the column is full
 
     # Checks if the top of the column is not 0, meaning a full column
-    if board[column][0] != 0:
-        print("gaboleh")
+    if game_board[column][0] != 0:
         return False
     else:
-        print("boleh")
         return True
 
 
-def win_row(player):
-    # iterates through all the rows
-    for row in range(s_row):
-
-        # iterates through columns until the
-        for column in range(s_column - 3):
-
-            # checks if there is a row of 4 of the same "color"
-            if board[column][row] == player and \
-                    board[column + 1][row] == player and \
-                    board[column + 2][row] == player and \
-                    board[column + 3][row] == player:
-                return player
-    return 0
-
-
-def win_column(player):
-
-    # iterates through columns until the
-    for column in range(s_column):
-
-        # iterates through all the rows
-        for row in range(s_row - 3):
-
-            # checks if there is a column of 4 of the same "color"
-            if board[column][row] == player and \
-                    board[column][row + 1] == player and \
-                    board[column][row + 2] == player and \
-                    board[column][row + 3] == player:
-                return player
-    return 0
-
-def win_forw_diag(player):
-
-    #iterates through columns 
-    for column in range(s_column - 3):
-        
-        #iterates through rows
-        for row in range(s_row - 3):
-            
-            #check if there is a forward diagonal of 4 of the same "color"
-            if board[column][row] == player and \
-                    board[column+1][row+1] == player and \
-                    board[column+2][row+2] == player and \
-                    board[column+3][row+3] == player:
-                return player
-    return 0
-
-def win_back_diag(player):
-
-    #iterates through columns
-    for column in range(s_column - 3):
-        
-        #iterates through rows
-        for row in range(s_row - 3):
-            
-            #check if there is a back diagonal of 4 of the same "color"
-            if board[row][column] == player and \
-                    board[column-1][row+1] == player and \
-                    board[column-2][row+2] == player and \
-                    board[column-3][row+3] == player:
-                return player
+# Check winner
+def four_in_row(player):
+    # win_column
+    if last_row <= 2:
+        if game_board[last_column][last_row] == player and \
+                game_board[last_column][last_row + 1] == player and \
+                game_board[last_column][last_row + 2] == player and \
+                game_board[last_column][last_row + 3] == player:
+            return player
+        else:
+            pass
+    # win_row_right
+    if last_column <= 3:
+        if game_board[last_column][last_row] == player and \
+                game_board[last_column + 1][last_row] == player and \
+                game_board[last_column + 2][last_row] == player and \
+                game_board[last_column + 3][last_row] == player:
+            return player
+    # win_row_left
+    if last_column >= 3:
+        if game_board[last_column][last_row] == player and \
+                game_board[last_column - 1][last_row] == player and \
+                game_board[last_column - 2][last_row] == player and \
+                game_board[last_column - 3][last_row] == player:
+            return player
+    # win_right_up_diagonal
+    if last_column <= 3 <= last_row:
+        if game_board[last_column][last_row] == player and \
+                game_board[last_column + 1][last_row - 1] == player and \
+                game_board[last_column + 2][last_row - 2] == player and \
+                game_board[last_column + 3][last_row - 3] == player:
+            return player
+    # win_right_down_diagonal
+    if last_column <= 3 and last_row <= 2:
+        if game_board[last_column][last_row] == player and \
+                game_board[last_column + 1][last_row + 1] == player and \
+                game_board[last_column + 2][last_row + 2] == player and \
+                game_board[last_column + 3][last_row + 3] == player:
+            return player
+    # win_left_up_diagonal
+    if last_column >= 3 and last_row >= 3:
+        if game_board[last_column][last_row] == player and \
+                game_board[last_column - 1][last_row - 1] == player and \
+                game_board[last_column - 2][last_row - 2] == player and \
+                game_board[last_column - 3][last_row - 3] == player:
+            return player
+    # win_left_down_diagonal
+    if last_column >= 3 and last_row <= 2:
+        if game_board[last_column][last_row] == player and \
+                game_board[last_column - 1][last_row + 1] == player and \
+                game_board[last_column - 2][last_row + 2] == player and \
+                game_board[last_column - 3][last_row + 3] == player:
+            return player
+    # no four in a row, returns zero
     return 0
 
 
 def player_turn(player):
     # User input for which column
     while True:
-        column = int(input("Select column: "))-1
+        column = int(input("Player " + str(player) + " select column: ")) - 1
         if column not in range(0, s_column):
             print("Column does not exist")
+        if not check(column):
+            print("Slot is full, try another")
         else:
             break
     if check(column):
-        fill(column, player)  # 1 meaning player1 for player
+        fill(game_board, column, player)  # 1 meaning player1 for player
 
 
-def ai_turn():
-    # True
-    pass
+def ai_turn(player):
+    column = heuristic.scoring(game_board, player)
+    if check(column):
+        fill(game_board, column, player)
 
 
 def main():
-    global board
-
-    board = generate_board()
+    global game_board
+    game_board = generate_board()
+    test_print(game_board)
     winner = 0
     turn = 1
     while True:
         if turn == 1:
             player_turn(1)
-            winner = win_row(1) or win_column(1) or win_forw_diag(1) or win_back_diag(1)
-            test_print()
+            # ai_turn(1)
+            winner = four_in_row(1)
+            test_print(game_board)
             turn = 2
 
         elif turn == 2:
             player_turn(2)
-            winner = win_row(2) or win_column(2) or win_forw_diag(2) or win_back_diag(2)
-            test_print()
+            # ai_turn(2)
+            winner = four_in_row(2)
+            test_print(game_board)
             turn = 1
 
-        if winner !=0:
-            print("Winner :",winner)
+        if winner != 0:
+            print("Winner :", winner)
             break
+
+
 main()

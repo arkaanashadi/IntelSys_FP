@@ -33,5 +33,6 @@ def main():
             turn = 1
         if winner != 0:
             print("Winner :", winner)
+            break
 
 main()

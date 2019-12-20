@@ -57,7 +57,6 @@ def get_lastrow(oldboard, newboard):
 
 
 def check(board,column):  # Checks if the column is full
-
     # Checks if the top of the column is not 0, meaning a full column
     if board[column][0] != 0:
         return False
@@ -79,7 +78,13 @@ def player_turn(board, s_column, s_row, player):
         fill(board, column, s_row, player)  # 1 meaning player1 for player
 
 
-def ai_turn(board, s_row, player):
-    column = heuristic.scoring(board, s_row, player)
+def ai_turn(board, s_row, player, curr_score): 
+    if board[int(len(board) / 2)][len(board[round(len(board) / 2)]) - 1] == 0:
+        column = int(len(board) / 2)
+        curr_score[column] += heuristic.center()
+    else:
+        decision = heuristic.scoring(board, s_row, player, curr_score)
+        column = decision.index(max(decision))
+        curr_score[column] += decision[column] - curr_score[column]
     if check(board, column):
         fill(board, column, s_row, player)

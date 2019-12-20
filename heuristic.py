@@ -6,11 +6,21 @@ def scoring(board, s_row, player, curr_score):
     # just to get the fill function, separate later
     ai_board = copy.deepcopy(board)
     score = copy.deepcopy(curr_score)
+    opponent = int
+    if player == 1:
+        opponent = 2
+    elif player == 2:
+        opponent = 1
     for ai_column in range(len(ai_board)):
         fill(ai_board, ai_column, s_row, player)
         point = minimax(ai_board, ai_column, get_row(ai_board, ai_column), player)        # check all possibilities
         score[ai_column] += point
+        # Opponent's next move total deduction scoring , unfinished
+        fill(ai_board, ai_column, s_row, opponent)
+        minpoint = minimax(ai_board,ai_column, get_row(ai_board,ai_column) - 1, opponent)
+        score[ai_column] -= minpoint
         print(point)
+        print(minpoint)
         for i in ai_board:
             print(str(i))
         ai_board = copy.deepcopy(board)

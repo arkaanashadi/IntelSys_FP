@@ -1,20 +1,21 @@
 import numpy
 import copy
 
-def scoring(board, s_row, player):
+def scoring(board, s_row, player, curr_score):
     from CONN4 import fill
     # just to get the fill function, separate later
     ai_board = copy.deepcopy(board)
-    score = [0] * len(ai_board)
+    score = copy.deepcopy(curr_score)
     for ai_column in range(len(ai_board)):
         fill(ai_board, ai_column, s_row, player)
-        score[ai_column] += minimax(ai_board, ai_column, get_row(ai_board, ai_column), player)
-        # for i in ai_board:
-        #     print(str(i))
+        point = minimax(ai_board, ai_column, get_row(ai_board, ai_column), player)        # check all possibilities
+        score[ai_column] += point
+        print(point)
+        for i in ai_board:
+            print(str(i))
         ai_board = copy.deepcopy(board)
         print(score)
-    decision = score.index(max(score))
-    return decision
+    return score
 
 
 def get_row(board, column):
@@ -28,74 +29,76 @@ def get_row(board, column):
 
 
 def minimax(board, column, row, player):
+    total_points = 0
     if four_in_row(board, column, row, player):
         return numpy.inf
-    #elif centre(board, column, row, player):
-    #    return 4
-    elif three_in_row(board, column, row, player):
-        return 3
-    elif two_in_row(board, column, row, player):
-        return 2
-    return 0
-
-
-def default():
-    return 0
+    total_points += three_in_row(board, column, row, player)
+    total_points += two_in_row(board, column, row, player)
+    return total_points
 
 
 ########################################################################################################################
 # Check two in a row
 def two_in_row(board, column, row, player):
+    two_rows = 0
     # two_column
     if row <= 4:
         if board[column][row] == player and \
                 board[column][row + 1] == player:
-            return True
+            board[column][row + 1] = 0
+            two_rows += 2
         else:
             pass
     # two_row_right
     if column <= 4:
         if board[column][row] == player and \
                 board[column + 1][row] == player:
-            return True
+            board[column][row + 1] = 0
+            two_rows += 2
     # two_row_left
     if column >= 1:
         if board[column][row] == player and \
                 board[column - 1][row] == player:
-            return True
+            board[column][row - 1] = 0
+            two_rows += 2
     # two_right_up_diagonal
     if column <= 5 and row >= 1:
         if board[column][row] == player and \
                 board[column + 1][row - 1] == player:
-            return True
+            board[column + 1][row - 1] = 0
+            two_rows += 2
     # two_right_down_diagonal
     if column <= 5 and row <= 4:
         if board[column][row] == player and \
                 board[column + 1][row + 1] == player:
-            return True
+            board[column + 1][row + 1] = 0
+            two_rows += 2
     # two_left_up_diagonal
     if column >= 1 and row >= 1:
         if board[column][row] == player and \
                 board[column - 1][row - 1] == player:
-            return True
+            board[column - 1][row - 1] = 0
+            two_rows += 2
     # two_left_down_diagonal
     if column >= 1 and row <= 4:
         if board[column][row] == player and \
                 board[column - 1][row + 1] == player:
-            return True
+            board[column - 1][row + 1] = 0
+            two_rows += 2
     # no two in a row, False
-    return False
+    return two_rows
 
 
 ########################################################################################################################
 # Check three in a row
 def three_in_row(board, column, row, player):
+    three_rows = 0
     # three_column
     if row <= 3:
         if board[column][row] == player and \
                 board[column][row + 1] == player and \
                 board[column][row + 2] == player:
-            return True
+            three_rows += 3
         else:
             pass
     # three_row_right
@@ -103,39 +106,39 @@ def three_in_row(board, column, row, player):
         if board[column][row] == player and \
                 board[column + 1][row] == player and \
                 board[column + 2][row] == player:
-            return True
+            three_rows += 3
     # three_row_left
     if column >= 2:
         if board[column][row] == player and \
                 board[column - 1][row] == player and \
                 board[column - 2][row] == player:
-            return True
+            three_rows += 3
     # three_right_up_diagonal
     if column <= 4 and row >= 2:
         if board[column][row] == player and \
                 board[column + 1][row - 1] == player and \
                 board[column + 2][row - 2] == player:
-            return True
+            three_rows += 3
     # three_right_down_diagonal
     if column <= 4 and row <= 3:
         if board[column][row] == player and \
                 board[column + 1][row + 1] == player and \
                 board[column + 2][row + 2] == player:
-            return True
+            three_rows += 3
     # three_left_up_diagonal
     if column >= 2 and row >= 2:
         if board[column][row] == player and \
                 board[column - 1][row - 1] == player and \
                 board[column - 2][row - 2] == player:
-            return True
+            three_rows += 3
     # three_left_down_diagonal
     if column >= 2 and row <= 3:
         if board[column][row] == player and \
                 board[column - 1][row + 1] == player and \
                 board[column - 2][row + 2] == player:
-            return True
+            three_rows += 3
     # no three in a row, False
-    return False
+    return three_rows
 
 
 ########################################################################################################################
@@ -195,13 +198,5 @@ def four_in_row(board, column, row, player):
     # no four in a row, False
     return False
 
-
-def centre(board, column, row, player):
-    # centre_slot
-    print(row)
-    print(row-1)
-    if board[column][row] == player and \
-            board[int(len(board)/2)][row] == player:
-        return True
-    # no four in a row, False
-    return False
+def center():
+    return 4

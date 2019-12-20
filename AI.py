@@ -7,14 +7,16 @@ def main():
     s_column = 7
     s_row = 6
     game_board = game.generate_board(s_column, s_row)
-    # test_print(game_board)
+    game.test_print(game_board, s_column, s_row)
     winner = 0
     turn = 1
+    ai_scoring1 = [0] * len(game_board)
+    ai_scoring2 = [0] * len(game_board)
     while winner == 0:
         prev_board = copy.deepcopy(game_board)
         if turn == 1:
-            #player_turn(1)
-            game.ai_turn(game_board, s_row, 1)
+            game.player_turn(game_board, s_column, s_row, 1)
+            # game.ai_turn(game_board, s_row, 1, ai_scoring1)
             last_column = game.get_lastcolumn(prev_board, game_board)
             last_row = game.get_lastrow(prev_board, game_board)
             if heuristic.four_in_row(game_board, last_column, last_row, 1):
@@ -23,8 +25,8 @@ def main():
             turn = 2
         elif turn == 2:
             print("turn 2")
-            game.player_turn(game_board, s_column , s_row, 2)
-            # ai_turn(2)
+            #game.player_turn(game_board, s_column , s_row, 2)
+            game.ai_turn(game_board, s_row, 2, ai_scoring2)
             last_column = game.get_lastcolumn(prev_board, game_board)
             last_row = game.get_lastrow(prev_board, game_board)
             if heuristic.four_in_row(game_board, last_column, last_row, 2):

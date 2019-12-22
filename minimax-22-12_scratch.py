@@ -1,6 +1,7 @@
 import numpy
 import copy
 
+# name function scoring and minimax should be switched
 def scoring(board, s_row, player, curr_score):
     from CONN4 import fill # fill slot on a column
     from CONN4 import check # check column availability

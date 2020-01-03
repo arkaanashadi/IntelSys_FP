@@ -78,13 +78,18 @@ def player_turn(board, s_column, s_row, player):
         fill(board, column, s_row, player)  # 1 meaning player1 for player
 
 
-def ai_turn(board, s_row, player, curr_score): 
+def ai_turn(board, s_row, player, curr_score):
     if board[int(len(board) / 2)][len(board[round(len(board) / 2)]) - 1] == 0:
         column = int(len(board) / 2)
         curr_score[column] += heuristic.center()
     else:
-        decision = heuristic.scoring(board, s_row, player, curr_score)
-        column = decision.index(max(decision))
-        curr_score[column] += decision[column] - curr_score[column]
+        start = time.time()
+        decision = heuristic.terminal(board, curr_score, 0, len(board)-1, [board], s_row, 0, player, 1, 2)
+        end = time.time()
+        print(end - start)
+        # decision = heuristic.minimax(board, s_row, player, curr_score, True, 0, 4)
+        column = decision
+        print(column)
+        # curr_score[column] += decision[column] - curr_score[column]
     if check(board, column):
         fill(board, column, s_row, player)
